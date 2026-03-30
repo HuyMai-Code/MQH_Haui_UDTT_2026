@@ -10,18 +10,25 @@ struct HocSinh{
     string diaChi;
 };
 
-void hienThi(HocSinh hs[]) {
+void hienThi(HocSinh x) {
+    cout << setw(10) << x.ten;
+    cout << setw(15) << x.hoDem;
+    cout << setw(10) << x.namSinh;
+    cout << setw(15) << x.diaChi;
+    cout << "\n";
+}
+void mauHienThi() {
     cout << setw(10) << "Ten";
     cout << setw(15) << "Ho dem";
     cout << setw(10) << "Nam sinh";
     cout << setw(15) << "Dia chi";
     cout << "\n";
+}
+
+void hienThiDS(HocSinh hs[]) {
+    mauHienThi();
     for (int i = 0; i < n; i++) {
-        cout << setw(10) << hs[i].ten;
-        cout << setw(15) << hs[i].hoDem;
-        cout << setw(10) << hs[i].namSinh;
-        cout << setw(15) << hs[i].diaChi;
-        cout << "\n";
+        hienThi(hs[i]);
     }
 }
 
@@ -56,6 +63,25 @@ void merge_sort(HocSinh hs[], int l, int r) {
     merge(hs, l, mid, r);
 }
 
+int timKiem(string name, HocSinh hs[]) {
+    int l = 0;
+    int r = n - 1;
+    int ans = -1;
+
+    while (l <= r) {
+        int mid = (l + r) / 2;
+        if (hs[mid].ten == name) {
+            ans = mid;
+            r = mid - 1;
+        } else if (hs[mid].ten > name) {
+            r = mid - 1;
+        } else {
+            l = mid + 1;
+        }
+    }
+    return ans;
+}
+
 int main() {
     HocSinh hs[n] = {
         {"Huy", "Mai Quang", 2006, "Ha Noi"},
@@ -63,8 +89,18 @@ int main() {
         {"Anh", "Trinh Tuan", 2006, "Thanh Hoa"},
     };
     merge_sort(hs, 0, n - 1);
-    hienThi(hs);
+    hienThiDS(hs);
+    string name;
+    cout << "Nhap ten hoc sinh can tim: ";
+    cin >> name;
+    int vt = timKiem(name, hs);
+    if (vt == -1) {
+        cout << "Khong tim thay hoc sinh\n";
+    } else {
+        cout << "Hoc sinh " << name << " o vi tri: " << vt + 1<< "\n";
+        mauHienThi();
+        hienThi(hs[vt]);
+    }
 
-    
     return 0;
 }
